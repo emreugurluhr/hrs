@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Candidate {
+  id              Int       @id @default(autoincrement())
+  collarType      String    // 'blue' | 'white'
+  fullName        String
+  birthDate       DateTime
+  registeredCity  String
+  hometown        String
+  militaryStatus  String?
+  experience      Int
+  email           String    @unique
+  interviewDate   DateTime?
+  serviceLine     String?
+  result          String?   // 'Olumlu' | 'Olumsuz'
+  rejectionReason String?
+  invitationDate  DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  interview       Interview?
+}
+
+model Interview {
+  id               Int       @id @default(autoincrement())
+  candidateId      Int       @unique
+  candidate        Candidate @relation(fields: [candidateId], references: [id])
+  education        String
+  proposedSalary   Float
+  hasAcquaintance  Boolean
+  applicationSource String
+  supervisor       String
+  cvPath           String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
